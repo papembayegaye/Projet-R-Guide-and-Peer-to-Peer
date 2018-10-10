@@ -39,7 +39,7 @@ public class ExplorationLocale {
 
     for (int i=0;i<table.length;i++) {
       //creation de la chaine a retourner
-      liste += table[i]+";";
+      liste += table[i];
      
     
     }

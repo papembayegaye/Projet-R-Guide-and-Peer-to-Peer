@@ -23,6 +23,7 @@ import net.jxta.util.*;
 import net.jxta.protocol.*;
 import net.jxta.id.*;
 import java.util.HashSet;
+import net.jxta.share.ContentAdvertisement;
 
 
 /**
@@ -35,7 +36,7 @@ public class Client extends Thread {
   private PeerGroup peerGroup = null;  //groupe d'appartenance du pair
   private OutputPipe outputPipe = null;  //pipe d'emission de message
   private String monFichier = "";  //nom du fichier contenant l'annonce
-
+ private ContentAdvertisement v1 = null;
 
   /**
    * Constructeur de la classe Client
@@ -65,6 +66,20 @@ public class Client extends Thread {
       outputPipe = pipeService.createOutputPipe(pipeAdv,60000);
 
     }
+  public ContentAdvertisement contenue(String fileName) throws FileNotFoundException, IOException {
+
+      //chargement de l'annonce depuis un fichier
+      FileInputStream file = new FileInputStream(fileName);
+      MimeMediaType asMimeType = new MimeMediaType("text/xml");
+
+      //il s'agit d'un pipe de diffusion (multicast)
+      PipeAdvertisement pipeAdv = (PipeAdvertisement) AdvertisementFactory.newAdvertisement(asMimeType, file);
+
+      //creation du pipe de communication
+      PipeService pipeService = peerGroup.getPipeService();
+     v1 = (ContentAdvertisement) pipeService.createOutputPipe(pipeAdv,60000);
+
+    return v1;}
 
 
     /**

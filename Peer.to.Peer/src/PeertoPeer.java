@@ -28,6 +28,9 @@ import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
 import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.table.TableRowSorter;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -54,20 +57,21 @@ public class PeertoPeer  extends JFrame implements Runnable,ActionListener {
      */
     public PeertoPeer(String nom,MesPaires mp) {
     super(nom); 
+      
         initComponents();
          
         jTextArea1.setEditable(false);
        pair=mp;
         jButton11.addActionListener(this);
-      jButton2.setEnabled(false);jButton3.setEnabled(false);jButton4.setEnabled(false);jButton5.setEnabled(false);jButton6.setEnabled(false);
+      jButton9.setEnabled(false);
       
-        jButton7.setEnabled(false); jButton17.setEnabled(false);
-  
     }
 
-    public ExplorationLocale getExploration() {
+    public static ExplorationLocale getExploration() {
         return exploration;
     }
+
+   
     
     
     public void  affiche(String affichi){ 
@@ -84,6 +88,8 @@ public class PeertoPeer  extends JFrame implements Runnable,ActionListener {
   }  public String getBr() {
         return br;
     }
+
+    
     public String btnChoixDossier(ActionEvent evt)
 {
     JFileChooser choix = new JFileChooser();
@@ -91,7 +97,7 @@ public class PeertoPeer  extends JFrame implements Runnable,ActionListener {
     int retour = choix.showOpenDialog(new JFrame());
     if(retour == JFileChooser.APPROVE_OPTION) {
        // un fichier a été choisi ( sortie par OK)
-        jButton17.setEnabled(true);
+       // jButton17.setEnabled(true);
       return choix.getSelectedFile().getAbsolutePath();// chemin absolu du dossier choisi
     } else {
       return "Le dossier n'a pas été choisi!"; }
@@ -133,9 +139,6 @@ public class PeertoPeer  extends JFrame implements Runnable,ActionListener {
         jButton6 = new javax.swing.JButton();
         jButton7 = new javax.swing.JButton();
         panelparent = new javax.swing.JPanel();
-        jPanel1 = new javax.swing.JPanel();
-        jButton16 = new javax.swing.JButton();
-        jButton17 = new javax.swing.JButton();
         panelconnection = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
@@ -143,14 +146,17 @@ public class PeertoPeer  extends JFrame implements Runnable,ActionListener {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         jSeparator1 = new javax.swing.JSeparator();
-        jButton10 = new javax.swing.JButton();
-        panelrecherche = new javax.swing.JPanel();
+        JButton10 = new javax.swing.JButton();
+        partager = new javax.swing.JButton();
         jTextField1 = new javax.swing.JTextField();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        jButton16 = new javax.swing.JButton();
+        panelrecherche = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
         jButton8 = new javax.swing.JButton();
         jButton9 = new javax.swing.JButton();
+        jButton10 = new javax.swing.JButton();
+        jScrollPane6 = new javax.swing.JScrollPane();
+        list3 = new javax.swing.JList<>();
         paneltelechargement = new javax.swing.JPanel();
         jProgressBar1 = new javax.swing.JProgressBar();
         jTextField3 = new javax.swing.JTextField();
@@ -192,7 +198,6 @@ public class PeertoPeer  extends JFrame implements Runnable,ActionListener {
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(657, 403));
         getContentPane().setLayout(null);
 
         jPanel3.setBackground(new java.awt.Color(102, 102, 255));
@@ -266,45 +271,6 @@ public class PeertoPeer  extends JFrame implements Runnable,ActionListener {
         panelparent.setPreferredSize(new java.awt.Dimension(650, 200));
         panelparent.setLayout(new java.awt.CardLayout());
 
-        jPanel1.setBackground(new java.awt.Color(153, 153, 255));
-
-        jButton16.setText("dossier");
-        jButton16.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton16ActionPerformed(evt);
-            }
-        });
-
-        jButton17.setText("ok");
-        jButton17.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton17ActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(211, 211, 211)
-                .addComponent(jButton16, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 129, Short.MAX_VALUE)
-                .addComponent(jButton17)
-                .addGap(65, 65, 65))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(222, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton16)
-                    .addComponent(jButton17))
-                .addGap(35, 35, 35))
-        );
-
-        panelparent.add(jPanel1, "card8");
-
         panelconnection.setBackground(new java.awt.Color(153, 153, 153));
         panelconnection.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(51, 51, 51), null));
         panelconnection.setLayout(null);
@@ -324,52 +290,66 @@ public class PeertoPeer  extends JFrame implements Runnable,ActionListener {
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null}
+
             },
             new String [] {
-                "Type", "File Name", "Size Bytes", "Check Sum"
+                "File Name", "Size Bytes", "Check Sum"
             }
         ));
         jScrollPane1.setViewportView(jTable1);
 
         panelpartage.add(jScrollPane1);
-        jScrollPane1.setBounds(60, 30, 510, 170);
+        jScrollPane1.setBounds(30, 60, 510, 170);
         panelpartage.add(jSeparator1);
         jSeparator1.setBounds(0, 220, 640, 10);
 
-        jButton10.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jButton10.setText("Reload");
-        jButton10.addActionListener(new java.awt.event.ActionListener() {
+        JButton10.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        JButton10.setText("Reload");
+        JButton10.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton10ActionPerformed(evt);
+                JButton10ActionPerformed(evt);
             }
         });
-        panelpartage.add(jButton10);
-        jButton10.setBounds(60, 240, 510, 25);
+        panelpartage.add(JButton10);
+        JButton10.setBounds(270, 250, 270, 25);
+
+        partager.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        partager.setText("Partager");
+        partager.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                partagerActionPerformed(evt);
+            }
+        });
+        panelpartage.add(partager);
+        partager.setBounds(30, 250, 230, 25);
+
+        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField1ActionPerformed(evt);
+            }
+        });
+        jTextField1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jTextField1KeyReleased(evt);
+            }
+        });
+        panelpartage.add(jTextField1);
+        jTextField1.setBounds(240, 20, 150, 30);
+
+        jButton16.setText("Rechercher");
+        jButton16.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton16ActionPerformed(evt);
+            }
+        });
+        panelpartage.add(jButton16);
+        jButton16.setBounds(420, 20, 110, 30);
 
         panelparent.add(panelpartage, "card2");
 
         panelrecherche.setBackground(new java.awt.Color(153, 153, 153));
         panelrecherche.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(0, 0, 0), null));
         panelrecherche.setLayout(null);
-        panelrecherche.add(jTextField1);
-        jTextField1.setBounds(29, 11, 261, 30);
-
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
-            },
-            new String [] {
-                "File Name", "Size Bytes", "Check Sum"
-            }
-        ));
-        jScrollPane3.setViewportView(jTable2);
-
-        panelrecherche.add(jScrollPane3);
-        jScrollPane3.setBounds(29, 59, 480, 150);
 
         jButton1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jButton1.setText("Recherche");
@@ -379,7 +359,7 @@ public class PeertoPeer  extends JFrame implements Runnable,ActionListener {
             }
         });
         panelrecherche.add(jButton1);
-        jButton1.setBounds(60, 230, 100, 30);
+        jButton1.setBounds(40, 240, 100, 30);
 
         jButton8.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jButton8.setText("Telechargement");
@@ -389,12 +369,31 @@ public class PeertoPeer  extends JFrame implements Runnable,ActionListener {
             }
         });
         panelrecherche.add(jButton8);
-        jButton8.setBounds(200, 230, 140, 30);
+        jButton8.setBounds(190, 240, 140, 30);
 
         jButton9.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jButton9.setText("Stop");
+        jButton9.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton9ActionPerformed(evt);
+            }
+        });
         panelrecherche.add(jButton9);
-        jButton9.setBounds(380, 230, 90, 30);
+        jButton9.setBounds(370, 240, 90, 30);
+
+        jButton10.setText("recharger");
+        jButton10.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton10ActionPerformed(evt);
+            }
+        });
+        panelrecherche.add(jButton10);
+        jButton10.setBounds(40, 10, 79, 23);
+
+        jScrollPane6.setViewportView(list3);
+
+        panelrecherche.add(jScrollPane6);
+        jScrollPane6.setBounds(40, 50, 430, 170);
 
         panelparent.add(panelrecherche, "card4");
 
@@ -428,6 +427,11 @@ public class PeertoPeer  extends JFrame implements Runnable,ActionListener {
 
         jButton14.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jButton14.setText("Verity");
+        jButton14.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton14ActionPerformed(evt);
+            }
+        });
         paneltelechargement.add(jButton14);
         jButton14.setBounds(485, 36, 84, 25);
 
@@ -583,7 +587,7 @@ public class PeertoPeer  extends JFrame implements Runnable,ActionListener {
     }
 
     public void setjButton10(JButton jButton10) {
-        this.jButton10 = jButton10;
+        this.JButton10 = jButton10;
     }
 
     public void setjButton11(JButton jButton11) {
@@ -706,9 +710,7 @@ public class PeertoPeer  extends JFrame implements Runnable,ActionListener {
         this.jScrollPane2 = jScrollPane2;
     }
 
-    public void setjScrollPane3(JScrollPane jScrollPane3) {
-        this.jScrollPane3 = jScrollPane3;
-    }
+   
 
     public void setjScrollPane4(JScrollPane jScrollPane4) {
         this.jScrollPane4 = jScrollPane4;
@@ -723,10 +725,13 @@ public class PeertoPeer  extends JFrame implements Runnable,ActionListener {
     public void setjTable1(JTable jTable1) {
         this.jTable1 = jTable1;
     }
-
-    public void setjTable2(JTable jTable2) {
-        this.jTable2 = jTable2;
+List List1;
+    public JList getjList1() {
+          
+        return list3;
     }
+
+  
 
     public void setjTextArea1(JTextArea jTextArea1) {
         this.jTextArea1 = jTextArea1;
@@ -736,9 +741,7 @@ public class PeertoPeer  extends JFrame implements Runnable,ActionListener {
         this.jTextArea2 = jTextArea2;
     }
 
-    public void setjTextField1(JTextField jTextField1) {
-        this.jTextField1 = jTextField1;
-    }
+    
 
     public void setjTextField2(JTextField jTextField2) {
         this.jTextField2 = jTextField2;
@@ -783,7 +786,7 @@ public class PeertoPeer  extends JFrame implements Runnable,ActionListener {
     }
 
     public JButton getjButton10() {
-        return jButton10;
+        return JButton10;
     }
 
     public JButton getjButton11() {
@@ -909,9 +912,7 @@ public class PeertoPeer  extends JFrame implements Runnable,ActionListener {
         return jScrollPane2;
     }
 
-    public JScrollPane getjScrollPane3() {
-        return jScrollPane3;
-    }
+  
 
     public JScrollPane getjScrollPane4() {
         return jScrollPane4;
@@ -927,9 +928,7 @@ public class PeertoPeer  extends JFrame implements Runnable,ActionListener {
         return jTable1;
     }
 
-    public JTable getjTable2() {
-        return jTable2;
-    }
+  
 
     public JTextArea getjTextArea1() {
         return jTextArea1;
@@ -939,9 +938,7 @@ public class PeertoPeer  extends JFrame implements Runnable,ActionListener {
         return jTextArea2;
     }
 
-    public JTextField getjTextField1() {
-        return jTextField1;
-    }
+   
 
     public JTextField getjTextField2() {
         return jTextField2;
@@ -1019,24 +1016,12 @@ public class PeertoPeer  extends JFrame implements Runnable,ActionListener {
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-       
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
-tabl=(DefaultTableModel) jTable1.getModel();          
-           int n=jTable1.getRowCount()-1;
-                
-                for(int i=n;i>=0;--i){
-                
-                    tabl.removeRow(i);
-                
-                }
-       
- 
- 
- 
-exploration.lister();
-    }//GEN-LAST:event_jButton10ActionPerformed
+    private void JButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JButton10ActionPerformed
+
+    }//GEN-LAST:event_JButton10ActionPerformed
  public void bontonactive(){
  jButton13.setEnabled(true);
  }
@@ -1052,33 +1037,72 @@ jButton12.setEnabled(true);
        pair.ru();
     }//GEN-LAST:event_jButton13ActionPerformed
 
-    private void jButton17ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton17ActionPerformed
-        panelparent.removeAll();
-        panelparent.add(panelconnection);
-        panelparent.repaint();
-        panelparent.revalidate();
-        jButton2.setEnabled(true);jButton3.setEnabled(true);jButton4.setEnabled(true);jButton5.setEnabled(true);jButton6.setEnabled(true);
-      
-        jButton7.setEnabled(true);
-    }//GEN-LAST:event_jButton17ActionPerformed
-
-    private void jButton16ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton16ActionPerformed
-        
-        
-     br = btnChoixDossier(evt) ;
-          exploration = new ExplorationLocale(br);
-           
-    }//GEN-LAST:event_jButton16ActionPerformed
+   
+    public JList getList3() {
+        return list3;
+    }
 
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
 
- pair.clier();        // TODO add your handling code here:
+      // TODO add your handling code here:
     }//GEN-LAST:event_jButton8ActionPerformed
+
+    private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
+
+        
+       
+    }//GEN-LAST:event_jButton9ActionPerformed
+public boolean activer(){
+    
+Boolean b1= true;
+jButton9.setEnabled(b1);
+    
+    return b1;
+}
+
+
+    private void jButton14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton14ActionPerformed
+     
+    }//GEN-LAST:event_jButton14ActionPerformed
+
+    private void partagerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_partagerActionPerformed
+        // TODO add your handling code here:
+       
+    }//GEN-LAST:event_partagerActionPerformed
+
+    private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton10ActionPerformed
+
+    private void jButton16ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton16ActionPerformed
+      String fichier_recherche=jTextField1.getText();
+        Recherche(fichier_recherche);
+    }//GEN-LAST:event_jButton16ActionPerformed
+
+    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+       
+    }//GEN-LAST:event_jTextField1ActionPerformed
+
+    private void jTextField1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyReleased
+        // TODO add your handling code here:
+          String fichier_recherche=jTextField1.getText();
+        Recherche(fichier_recherche);
+    }//GEN-LAST:event_jTextField1KeyReleased
+
+    public JButton getJButton10() {
+        return JButton10;
+    }
+
+    
+
+    public JButton getPartager() {
+        return partager;
+    }
 
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
+    public static void main(String args[]) throws PeerGroupException, IOException {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -1108,6 +1132,7 @@ jButton12.setEnabled(true);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton JButton10;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton10;
     private javax.swing.JButton jButton11;
@@ -1116,7 +1141,6 @@ jButton12.setEnabled(true);
     private javax.swing.JButton jButton14;
     private javax.swing.JButton jButton15;
     private javax.swing.JButton jButton16;
-    private javax.swing.JButton jButton17;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
@@ -1138,24 +1162,23 @@ jButton12.setEnabled(true);
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JProgressBar jProgressBar1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
+    private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTable jTable1;
-    private javax.swing.JTable jTable2;
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextArea jTextArea2;
     private javax.swing.JTextArea jTextArea3;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
+    private javax.swing.JList<String> list3;
     private javax.swing.JPanel panelchat;
     private javax.swing.JPanel panelconnection;
     private javax.swing.JPanel panelliste;
@@ -1163,6 +1186,7 @@ jButton12.setEnabled(true);
     private javax.swing.JPanel panelpartage;
     private javax.swing.JPanel panelrecherche;
     private javax.swing.JPanel paneltelechargement;
+    private javax.swing.JButton partager;
     // End of variables declaration//GEN-END:variables
 public class ExplorationLocale {
 
@@ -1200,8 +1224,7 @@ public class ExplorationLocale {
     }
        
     }
-
-
+ 
   /**
    * Accede au fichier dont le nom est donne en parametre
    * Retourne un tableau de byte contenant le fichier
@@ -1236,8 +1259,17 @@ public class ExplorationLocale {
        
         tabl.addRow(line);
        }
+
+    public JFrame getjFrame1() {
+        return jFrame1;
+    }
    public void    affichage(String f1){
    jTextArea3.append(f1);
    }
-   
+   public void Recherche(String fichier_recherche){
+        
+       TableRowSorter<DefaultTableModel> search=new TableRowSorter<DefaultTableModel>(tabl);
+       this.jTable1.setRowSorter(search);
+       search.setRowFilter(RowFilter.regexFilter(fichier_recherche)); 
+   }
 }

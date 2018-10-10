@@ -101,8 +101,7 @@ public class Serveur extends Thread implements PipeMsgListener {
     }
     //message de demande d'un document particulier (appui sur bouton "afficher")
     if (type.equals("DEMANDE_DOC")) {
-       monPair.traiterDemandeDocument(message.getMessageElement("Auteur").toString(),message.getMessageElement("NomDocument").toString());
-    }
+        }
     //reception d'un message contenant un document suite a une demande du pair
     if (type.equals("ENVOI_DOC")) {
        monPair.receptionDocument(message.getMessageElement("Auteur").toString(),message.getMessageElement("Contenu").toString());
